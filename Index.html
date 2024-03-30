@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Budget Personnel</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    /* Styles pour rendre le tableau joli */
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+    th, td {
+      border: 1px solid #dddddd;
+      text-align: left;
+      padding: 8px;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+    #chartContainer {
+      width: 600px;
+      height: 400px;
+      margin: 20px auto;
+    }
+  </style>
+</head>
+<body>
+  <h1>Tableau de Budget Personnel</h1>
+  <table id="budgetTable">
+    <thead>
+      <tr>
+        <th>Catégorie</th>
+        <th>Dépenses (€)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Nourriture</td>
+        <td><input type="number" id="nourritureInput"></td>
+      </tr>
+      <tr>
+        <td>Logement</td>
+        <td><input type="number" id="logementInput"></td>
+      </tr>
+      <!-- Ajoutez d'autres lignes pour d'autres catégories -->
+    </tbody>
+  </table>
+  <div id="chartContainer">
+    <canvas id="budgetChart"></canvas>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Récupère les inputs
+      const nourritureInput = document.getElementById('nourritureInput');
+      const logementInput = document.getElementById('logementInput');
+
+      // Met à jour le graphique lorsqu'un input est modifié
+      nourritureInput.addEventListener('input', updateChart);
+      logementInput.addEventListener('input', updateChart);
+
+      // Initialisation du graphique
+      const ctx = document.getElementById('budgetChart').getContext('2d');
+      const chart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+          labels: ['Nourriture', 'Logement'],
+          datasets: [{
+            label: 'Dépenses',
+            data: [0, 0],
+            backgroundColor: ['#ff6384', '#36a2eb']
+          }]
+        }
+      });
+
+      // Fonction pour mettre à jour le graphique
+      function updateChart() {
+        const nourriture = parseFloat(nourritureInput.value) || 0;
+        const logement = parseFloat(logementInput.value) || 0;
+        
+        chart.data.datasets[0].data = [nourriture, logement];
+        chart.update();
+      }
+    });
+  </script>
+</body>
+</html>
